@@ -54,6 +54,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'rubocop', require: false
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 
@@ -78,3 +79,4 @@ gem "devise"
 gem "mini_magick"
 gem "image_processing", "~> 1.2"
 gem "active_hash"
+gem "pry-rails"

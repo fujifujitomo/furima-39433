@@ -126,6 +126,7 @@
     <div class="subtitle" >
       新規投稿商品
     </div>
+
     <ul class='item-lists'>
       <% if @items[0] != nil%>
       <% @items.each do |item|%>
@@ -133,6 +134,7 @@
         <%= link_to item_path(item) do %>
         <div class='item-img-content'>
           <%= image_tag item.image, class: "item-img" %>
+
           <%# sold outの表示 %>
           <%# 購入済みの場合、条件分岐 %>
           <div class='sold-out'>
