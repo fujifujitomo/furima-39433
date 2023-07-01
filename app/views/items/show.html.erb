@@ -9,13 +9,13 @@
 
     <div class='item-img-content'>
       <%= image_tag @item.image ,class:"item-box-img" %>
-
       <%# 購入済みの場合、条件分岐 %>
+      <% if @item.purchase.present? %>
         <div class='sold-out'>
           <span>Sold Out!!</span>
         </div>
+      <% end %>
       <%# //購入済みの場合、条件分岐 %>
-
     </div>
 
     <div class="item-price-box">
@@ -27,20 +27,20 @@
       </span>
     </div>
 
-    <%# ログインしている、かつ、購入済みの場合、条件分岐 %>
-    <% if current_user && @item.sold_out? %>
-      <%# ログインユーザーと出品者が同一の場合、条件分岐 %>
-      <% if current_user == @item.user %>
-        <%= link_to '商品の編集', edit_item_path(@item), method: :get, class: "item-red-btn" %>
-        <p class='or-text'>or</p>
-        <%= link_to '削除', item_path(@item), method: :delete, data: {turbo_method: :delete}, class:'item-destroy' %>
-      <% else %>
-      <%# そうでない場合、条件分岐 %>
-        <%= link_to '購入画面に進む', "#", class:"item-red-btn"%>
-       <% end %>
-      <%# //ログインユーザーと出品者が同一の場合、条件分岐 %>
-    <% end %>
-    <%# //ログインしている、かつ、購入済みの場合、条件分岐 %>
+<%# ログインしている、かつ、購入済みの場合、条件分岐 %>
+<%# if current_user && @item.purchase.present? %>
+  <%# ログインユーザーと出品者が同一の場合、条件分岐 %>
+  <% if current_user == @item.user %>
+    <%= link_to '商品の編集', edit_item_path(@item), method: :get, class: "item-red-btn" %>
+    <p class='or-text'>or</p>
+    <%= link_to '削除', item_path(@item), method: :delete, data: {turbo_method: :delete}, class:'item-destroy' %>
+  <%# そうでない場合、条件分岐 %>
+  <% else %>
+    <%= link_to '購入画面に進む', item_purchases_path(@item), class: "item-red-btn" %>
+  <% end %>
+<%# end %>
+<%# //ログインユーザーと出品者が同一の場合、条件分岐 %>
+<%# //ログインしている、かつ、購入済みの場合、条件分岐 %>
     
     <div class="item-explain-box">
       <span><%= @item.description %></span>
@@ -96,7 +96,7 @@
       </p>
       <button type="submit" class="comment-btn">
         <%= image_tag "comment.png" ,class:"comment-flag-icon" ,width:"20",height:"25"%>
-        <span>コメントする<span>
+        <span>コメントする</span>
       </button>
     </form>
   </div>
