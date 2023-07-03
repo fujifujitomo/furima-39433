@@ -1,14 +1,13 @@
 class PurchasesController < ApplicationController
   before_action :set_public_key, only: [:index, :create]
+  before_action :move_to_index, only: [:index, :create]
+  before_action :authenticate_user!, only: [:index,:create]
 
   def index
-    @item = Item.find(params[:item_id])
     @purchase_address = PurchaseAddress.new
   end
 
-
   def create
-    @item = Item.find(params[:item_id])
     @purchase_address = PurchaseAddress.new(purchase_params)
     if @purchase_address.valid?
       pay_item
@@ -18,7 +17,6 @@ class PurchasesController < ApplicationController
       render 'index', status: :unprocessable_entity
     end
   end
-
 
     private
 
@@ -40,4 +38,12 @@ class PurchasesController < ApplicationController
       gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
     end
 
+    def move_to_index
+      @item = Item.find(params[:item_id])
+      if @item.purchase.present?
+        redirect_to root_path
+      elsif user_signed_in? && current_user == @item.user
+        redirect_to root_path
+      end
+    end
 end
