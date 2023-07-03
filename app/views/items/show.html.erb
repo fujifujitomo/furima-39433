@@ -8,7 +8,7 @@
     </h2>
 
     <div class='item-img-content'>
-      <%= image_tag @item.image ,class:"item-box-img" %>
+      <%= image_tag @item.image,class:"item-box-img" %>
       <%# 購入済みの場合、条件分岐 %>
       <% if @item.purchase.present? %>
         <div class='sold-out'>
@@ -28,7 +28,7 @@
     </div>
 
 <%# ログインしている、かつ、購入済みの場合、条件分岐 %>
-<%# if current_user && @item.purchase.present? %>
+<% if current_user && !@item.purchase.present?  %>
   <%# ログインユーザーと出品者が同一の場合、条件分岐 %>
   <% if current_user == @item.user %>
     <%= link_to '商品の編集', edit_item_path(@item), method: :get, class: "item-red-btn" %>
@@ -38,7 +38,7 @@
   <% else %>
     <%= link_to '購入画面に進む', item_purchases_path(@item), class: "item-red-btn" %>
   <% end %>
-<%# end %>
+<% end %>
 <%# //ログインユーザーと出品者が同一の場合、条件分岐 %>
 <%# //ログインしている、かつ、購入済みの場合、条件分岐 %>
     
