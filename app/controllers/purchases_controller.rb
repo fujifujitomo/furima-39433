@@ -3,15 +3,16 @@ class PurchasesController < ApplicationController
 
   def index
     @item = Item.find(params[:item_id])
-    @purchase = Purchase.new
+    @purchase_address = PurchaseAddress.new
   end
 
 
   def create
-    @purchase = Purchase.new(purchase_params)
-    if @purchase.valid?
+    @item = Item.find(params[:item_id])
+    @purchase_address = PurchaseAddress.new(purchase_params)
+    if @purchase_address.valid?
       pay_item
-      @purchase.save
+      @purchase_address.save
       return redirect_to root_path
     else
       render 'index', status: :unprocessable_entity
@@ -22,14 +23,15 @@ class PurchasesController < ApplicationController
     private
 
     def purchase_params
-      params.require(:purchase)     .permit(:price).merge(token: params[:token])
+      params.require(:purchase_address).permit(:postal_code, :prefecture, :city, :addresses, :building, :phone_number, :purchase_id).merge(token: params[:token],item_id: params[:item_id], user_id: current_user.id)
     end
 
     def pay_item
       Payjp.api_key = ENV["PAYJP_SECRET_KEY"] # 自身のPAY.JPテスト秘密鍵を記述しましょう
+      item = Item.find(params[:item_id])
       Payjp::Charge.create(
-        amount: order_params[:price],  # 商品の値段
-        card: order_params[:token],    # カードトークン
+        amount: item.price,  # 商品の値段
+        card: purchase_params[:token],    # カードトークン
         currency: 'jpy'                 # 通貨の種類（日本円）
       )
     end
