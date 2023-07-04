@@ -7,14 +7,12 @@ RSpec.describe PurchaseAddress, type: :model do
     @purchase_address = FactoryBot.build(:purchase_address, item_id: item.id, user_id: user.id, token: 'valid_token')
   end
 
-
   describe '購入内容の作成' do
     context '内容に問題ない場合' do
       it '全て正常' do
         expect(@purchase_address).to be_valid
       end
     end
-
 
     context '内容に問題がある場合' do
       it 'token:必須' do
@@ -30,7 +28,7 @@ RSpec.describe PurchaseAddress, type: :model do
       it 'postal_code:「3桁ハイフン4桁」の半角文字列' do
         @purchase_address.postal_code = '123-456７'
         @purchase_address.valid?
-        expect(@purchase_address.errors.full_messages).to include("Postal code is invalid. Include hyphen(-)")
+        expect(@purchase_address.errors.full_messages).to include('Postal code is invalid. Include hyphen(-)')
       end
       it 'prefecture:0以外' do
         @purchase_address.prefecture = 0
@@ -55,19 +53,18 @@ RSpec.describe PurchaseAddress, type: :model do
       it 'phone_number:10桁以上' do
         @purchase_address.phone_number = '123456789'
         @purchase_address.valid?
-        expect(@purchase_address.errors.full_messages).to include("Phone number is too short (minimum is 10 characters)")
+        expect(@purchase_address.errors.full_messages).to include('Phone number is too short (minimum is 10 characters)')
       end
       it 'phone_number:11桁以内' do
         @purchase_address.phone_number = '123456789012'
         @purchase_address.valid?
-        expect(@purchase_address.errors.full_messages).to include("Phone number is too long (maximum is 11 characters)")
+        expect(@purchase_address.errors.full_messages).to include('Phone number is too long (maximum is 11 characters)')
       end
       it 'phone_number:半角数字' do
         @purchase_address.phone_number = '１２３４５６７８９１０'
         @purchase_address.valid?
-        expect(@purchase_address.errors.full_messages).to include("Phone number is not a number")
+        expect(@purchase_address.errors.full_messages).to include('Phone number is not a number')
       end
-
     end
   end
 end
