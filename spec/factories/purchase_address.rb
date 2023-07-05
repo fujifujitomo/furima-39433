@@ -6,7 +6,5 @@ FactoryBot.define do
     addresses { '1-2-3' }
     phone_number { '09012345678' }
 
-    association :user
-    association :item
   end
 end
