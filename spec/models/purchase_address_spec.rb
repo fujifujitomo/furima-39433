@@ -9,7 +9,12 @@ RSpec.describe PurchaseAddress, type: :model do
 
   describe '購入内容の作成' do
     context '内容に問題ない場合' do
-      it '全て正常' do
+
+      it 'building(建物名)が空でも購入できる' do
+        @purchase_address.building = ''
+        expect(@purchase_address).to be_valid
+      end
+      it '他、全て正常' do
         expect(@purchase_address).to be_valid
       end
     end
